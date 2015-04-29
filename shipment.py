@@ -369,8 +369,12 @@ class GenerateShippingLabel(Wizard):
         return map(
             int, Attachment.search([
                 (
-                    'resource', '=', '%s,%d' %
-                    (shipment.__name__, shipment.id))
+                    'resource', 'in',
+                    [
+                        '%s,%d' % (package.__name__, package.id)
+                        for package in shipment.packages
+                    ]
+                )
             ])
         )
 
